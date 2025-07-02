@@ -1,0 +1,81 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'https://cdn.fox2code.com/maven' }
+    }
+    dependencies {
+        classpath('com.fox2code.FoxLoader:dev:2.0-alpha28')
+    }
+}
+
+plugins {
+    id("com.gradleup.shadow") version "8.3.8"
+}
+
+apply plugin: 'foxloader.dev'
+
+group = 'com.fox2code'
+version = '0.1.0'
+
+repositories {
+    maven {
+        url 'https://maven.enginehub.org/repo/'
+    }
+}
+
+configurations {
+    includeToJar
+    compileOnly.extendsFrom(includeToJar)
+    runtimeOnly.extendsFrom(includeToJar)
+}
+
+dependencies {
+    compileOnly 'com.google.code.findbugs:jsr305:1.3.9'
+    includeToJar 'de.schlichtherle:truezip:6.8.4'
+    includeToJar 'org.yaml:snakeyaml:1.9'
+    includeToJar 'com.sk89q:jchronic:0.2.4a'
+    includeToJar 'com.sk89q.lib:jlibnoise:1.0.0'
+    includeToJar 'org.mozilla:rhino-runtime:1.7.13'
+    includeToJar 'com.thoughtworks.paranamer:paranamer:2.8.3'
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    from "LICENSE"
+}
+
+javadoc.options.addStringOption('Xdoclint:none', '-quiet')
+
+tasks.named('shadowJar', ShadowJar) {
+    archiveClassifier.set("")
+}
+
+foxloader.useJarTask(tasks.named('shadowJar', ShadowJar) as TaskProvider<org.gradle.jvm.tasks.Jar>)
+jar.enabled = false
+assemble.dependsOn("shadowJar")
+
+afterEvaluate {
+    tasks.named('shadowJar', ShadowJar) {
+        configurations = project.configurations.named('includeToJar').get().forEach { [files(it)] }
+    }
+}
+
+foxloader {
+    modId = "worldedit"
+    modName = "WorldEdit"
+    modVersion = project.version
+    modAuthors = "Fox2Code"
+    modWebsite = "https://github.com/Modders-of-ReIndev/FoxLoaderWorldEdit"
+    modMain = "com.sk89q.worldedit.foxloader.FoxLoaderWorldEdit"
+    modDesc("WorldEdit port for ReIndev")
+    modDesc()
+    modDesc("Based on WorldEdit 6.1.11")
+}
