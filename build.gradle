@@ -1,12 +1,10 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 buildscript {
     repositories {
         mavenCentral()
         maven { url 'https://cdn.fox2code.com/maven' }
     }
     dependencies {
-        classpath('com.fox2code.FoxLoader:dev:2.0-alpha28')
+        classpath('com.fox2code.FoxLoader:dev:2.0-alpha30')
     }
 }
 
@@ -53,20 +51,6 @@ jar {
 }
 
 javadoc.options.addStringOption('Xdoclint:none', '-quiet')
-
-tasks.named('shadowJar', ShadowJar) {
-    archiveClassifier.set("")
-}
-
-foxloader.useJarTask(tasks.named('shadowJar', ShadowJar) as TaskProvider<org.gradle.jvm.tasks.Jar>)
-jar.enabled = false
-assemble.dependsOn("shadowJar")
-
-afterEvaluate {
-    tasks.named('shadowJar', ShadowJar) {
-        configurations = project.configurations.named('includeToJar').get().forEach { [files(it)] }
-    }
-}
 
 foxloader {
     modId = "worldedit"
