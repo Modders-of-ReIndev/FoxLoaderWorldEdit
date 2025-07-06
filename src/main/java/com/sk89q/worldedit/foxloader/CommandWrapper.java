@@ -130,6 +130,7 @@ public class CommandWrapper extends Command {
         commandMap.put("forestgen", new String[]{});
         commandMap.put("/flora", new String[]{});
         commandMap.put("listchunks", new String[]{});
+        commandMap.put("/fast", new String[]{});
         for (Map.Entry<String, String[]> entry : commandMap.entrySet()) {
             wrappers.add(new CommandWrapper(entry));
         }
