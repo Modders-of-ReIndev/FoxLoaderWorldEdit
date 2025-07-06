@@ -168,12 +168,8 @@ public class FoxLoaderWorld extends AbstractWorld {
 
     @Override
     public Mask createLiquidMask() {
-        // TODO: Use FoxLoader API once it exists.
-        Fluid[] fluids = new Fluid[]{
-                Fluids.WATER, Fluids.LAVA, Fluids.ACID, Fluids.SANGUIS
-        };
         ArrayList<BaseBlock> wFluids = new ArrayList<>();
-        for (Fluid fluid : fluids) {
+        for (Fluid fluid : Fluids.getFluids()) {
             wFluids.add(new BaseBlock(fluid.getMoving().blockID, -1));
             wFluids.add(new BaseBlock(fluid.getStill().blockID, -1));
         }
