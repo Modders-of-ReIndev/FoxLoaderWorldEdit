@@ -57,6 +57,7 @@ foxloader {
     modName = "WorldEdit"
     modVersion = project.version
     modAuthors = "Fox2Code"
+    modIcon = "assets/worldedit/icon.png"
     modWebsite = "https://github.com/Modders-of-ReIndev/FoxLoaderWorldEdit"
     modMain = "com.sk89q.worldedit.foxloader.FoxLoaderWorldEdit"
     modDesc("WorldEdit port for ReIndev")
